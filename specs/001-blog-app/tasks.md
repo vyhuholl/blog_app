@@ -28,21 +28,21 @@ This task breakdown organizes implementation by user story to enable independent
 
 ### Tasks
 
-- [ ] T001 Create project directory structure per plan.md (app/, static/, tests/, alembic/)
-- [ ] T002 [P] Initialize pyproject.toml with project metadata and tool configurations
-- [ ] T003 [P] Create requirements.txt with all Python dependencies (FastAPI, Tortoise ORM, PyJWT, bcrypt, pytest, ruff, uvicorn)
-- [ ] T004 Create .env.example with all required environment variables (DATABASE_URL, JWT_SECRET, etc.)
-- [ ] T005 [P] Create .gitignore with Python, SQLite, and IDE-specific ignore patterns
-- [ ] T006 [P] Configure ruff in pyproject.toml with PEP 8 rules and complexity limits
-- [ ] T007 [P] Configure pytest in pyproject.toml with coverage settings and async support
-- [ ] T008 Create virtual environment and install dependencies using uv
-- [ ] T009 Create app/main.py with basic FastAPI application initialization
-- [ ] T010 [P] Create app/config.py with Pydantic Settings for environment configuration
-- [ ] T011 [P] Create static/css/style.css with initial CSS reset and variables
-- [ ] T012 [P] Create static/js/main.js with basic structure
-- [ ] T013 Configure Alembic initialization in alembic/ directory
-- [ ] T014 Verify linter runs successfully with ruff check .
-- [ ] T015 Verify basic FastAPI app starts with uvicorn app.main:app
+- [X] T001 Create project directory structure per plan.md (app/, static/, tests/, alembic/)
+- [X] T002 [P] Initialize pyproject.toml with project metadata and tool configurations
+- [X] T003 [P] Create requirements.txt with all Python dependencies (FastAPI, Tortoise ORM, PyJWT, bcrypt, pytest, ruff, uvicorn)
+- [X] T004 Create .env.example with all required environment variables (DATABASE_URL, JWT_SECRET, etc.)
+- [X] T005 [P] Create .gitignore with Python, SQLite, and IDE-specific ignore patterns
+- [X] T006 [P] Configure ruff in pyproject.toml with PEP 8 rules and complexity limits
+- [X] T007 [P] Configure pytest in pyproject.toml with coverage settings and async support
+- [X] T008 Create virtual environment and install dependencies using uv
+- [X] T009 Create app/main.py with basic FastAPI application initialization
+- [X] T010 [P] Create app/config.py with Pydantic Settings for environment configuration
+- [X] T011 [P] Create static/css/style.css with initial CSS reset and variables
+- [X] T012 [P] Create static/js/main.js with basic structure
+- [X] T013 Configure Alembic initialization in alembic/ directory
+- [X] T014 Verify linter runs successfully with ruff check .
+- [X] T015 Verify basic FastAPI app starts with uvicorn app.main:app
 
 **Exit Criteria**:
 - Project structure matches plan.md specification
@@ -60,31 +60,31 @@ This task breakdown organizes implementation by user story to enable independent
 
 ### Database Models
 
-- [ ] T016 Create app/models/__init__.py with Tortoise ORM module registration
-- [ ] T017 [P] Implement User model in app/models/user.py with all fields and indexes per data-model.md
-- [ ] T018 [P] Implement Post model in app/models/post.py with relationships to User
-- [ ] T019 [P] Implement Comment model in app/models/comment.py with relationships to User and Post
-- [ ] T020 Configure database connection in app/main.py with SQLite WAL mode and Tortoise ORM initialization
-- [ ] T021 Create initial Alembic migration for User, Post, and Comment tables
-- [ ] T022 Test migration applies successfully with alembic upgrade head
-- [ ] T023 Verify database schema matches data-model.md specification
+- [X] T016 Create app/models/__init__.py with Tortoise ORM module registration
+- [X] T017 [P] Implement User model in app/models/user.py with all fields and indexes per data-model.md
+- [X] T018 [P] Implement Post model in app/models/post.py with relationships to User
+- [X] T019 [P] Implement Comment model in app/models/comment.py with relationships to User and Post
+- [X] T020 Configure database connection in app/main.py with SQLite WAL mode and Tortoise ORM initialization
+- [X] T021 Create initial Alembic migration for User, Post, and Comment tables
+- [X] T022 Test migration applies successfully with alembic upgrade head
+- [X] T023 Verify database schema matches data-model.md specification
 
 ### Pydantic Schemas
 
-- [ ] T024 Create app/schemas/__init__.py for schema exports
-- [ ] T025 [P] Implement user schemas in app/schemas/user.py (UserRegister, UserLogin, UserResponse, UserPublic)
-- [ ] T026 [P] Implement post schemas in app/schemas/post.py (PostCreate, PostUpdate, PostResponse, PostList)
-- [ ] T027 [P] Implement comment schemas in app/schemas/comment.py (CommentCreate, CommentUpdate, CommentResponse)
-- [ ] T028 Add validation tests for all Pydantic schemas in tests/test_schemas.py
+- [X] T024 Create app/schemas/__init__.py for schema exports
+- [X] T025 [P] Implement user schemas in app/schemas/user.py (UserRegister, UserLogin, UserResponse, UserPublic)
+- [X] T026 [P] Implement post schemas in app/schemas/post.py (PostCreate, PostUpdate, PostResponse, PostList)
+- [X] T027 [P] Implement comment schemas in app/schemas/comment.py (CommentCreate, CommentUpdate, CommentResponse)
+- [X] T028 Add validation tests for all Pydantic schemas in tests/test_schemas.py
 
 ### Testing Infrastructure
 
-- [ ] T029 Create tests/conftest.py with pytest fixtures for database initialization (in-memory SQLite)
-- [ ] T030 [P] Create test fixtures for sample User creation in tests/conftest.py
-- [ ] T031 [P] Create test fixtures for sample Post creation in tests/conftest.py
-- [ ] T032 [P] Create test fixtures for sample Comment creation in tests/conftest.py
-- [ ] T033 Create FastAPI TestClient fixture in tests/conftest.py
-- [ ] T034 Verify test infrastructure with basic smoke test
+- [X] T029 Create tests/conftest.py with pytest fixtures for database initialization (in-memory SQLite)
+- [X] T030 [P] Create test fixtures for sample User creation in tests/conftest.py
+- [X] T031 [P] Create test fixtures for sample Post creation in tests/conftest.py
+- [X] T032 [P] Create test fixtures for sample Comment creation in tests/conftest.py
+- [X] T033 Create FastAPI TestClient fixture in tests/conftest.py
+- [X] T034 Verify test infrastructure with basic smoke test
 
 **Exit Criteria**:
 - All database models implemented with correct relationships
