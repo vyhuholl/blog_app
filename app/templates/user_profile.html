@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.username }}'s Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="profile-container">
+        <header class="profile-header">
+            <div class="profile-avatar">
+                <div class="avatar-placeholder">{{ user.username[0].upper() }}</div>
+            </div>
+            <div class="profile-info">
+                <h1>{{ user.username }}</h1>
+                <div class="profile-meta">
+                    <span class="profile-stat">
+                        <strong>{{ post_count }}</strong> posts
+                    </span>
+                    <span class="profile-date">
+                        Member since {{ user.created_at.strftime('%B %Y') }}
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="profile-posts">
+            <h2>Recent Posts</h2>
+            <div id="user-posts" class="posts-list">
+                <div class="loading" id="loading">Loading posts...</div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script>
+    const userId = {{ user.id }};
+
+    async function loadUserPosts() {
+        const loading = document.getElementById('loading');
+        const postsContainer = document.getElementById('user-posts');
+
+        loading.style.display = 'block';
+
+        try {
+            // Get all posts and filter by author on client side
+            // In a production app, you'd want a dedicated endpoint for user posts
+            const response = await fetch('/api/posts?page=1&page_size=50');
+            
+            if (!response.ok) {
+                throw new Error('Failed to load posts');
+            }
+
+            const data = await response.json();
+            loading.style.display = 'none';
+
+            // Filter posts by this user
+            const userPosts = data.items.filter(post => post.author.id === userId);
+
+            if (userPosts.length === 0) {
+                postsContainer.innerHTML = '<p class="no-posts">No posts yet.</p>';
+            } else {
+                postsContainer.innerHTML = userPosts.map(post => `
+                    <article class="post-card">
+                        <h3><a href="/posts/${post.id}">${escapeHtml(post.title)}</a></h3>
+                        <div class="post-meta">
+                            <span class="post-date">${formatDate(post.created_at)}</span>
+                        </div>
+                    </article>
+                `).join('');
+            }
+        } catch (error) {
+            loading.style.display = 'none';
+            postsContainer.innerHTML = '<p class="error">Failed to load posts</p>';
+        }
+    }
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        loadUserPosts();
+    });
+</script>
+
+<style>
+    .profile-container {
+        max-width: var(--content-max-width);
+        margin: 0 auto;
+    }
+
+    .profile-header {
+        display: flex;
+        gap: var(--spacing-xl);
+        align-items: center;
+        padding: var(--spacing-2xl);
+        background-color: var(--color-background);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        margin-bottom: var(--spacing-2xl);
+    }
+
+    .profile-avatar {
+        flex-shrink: 0;
+    }
+
+    .avatar-placeholder {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--font-size-4xl);
+        font-weight: 700;
+    }
+
+    .profile-info h1 {
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .profile-meta {
+        display: flex;
+        gap: var(--spacing-lg);
+        color: var(--color-text-light);
+        font-size: var(--font-size-sm);
+        flex-wrap: wrap;
+    }
+
+    .profile-stat {
+        font-size: var(--font-size-base);
+    }
+
+    .profile-stat strong {
+        color: var(--color-text);
+        font-weight: 700;
+    }
+
+    .profile-date::before {
+        content: "📅 ";
+    }
+
+    .profile-posts {
+        background-color: var(--color-background);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        padding: var(--spacing-2xl);
+    }
+
+    .profile-posts h2 {
+        margin-bottom: var(--spacing-xl);
+    }
+
+    @media (max-width: 768px) {
+        .profile-header {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .avatar-placeholder {
+            width: 80px;
+            height: 80px;
+            font-size: var(--font-size-3xl);
+        }
+
+        .profile-meta {
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+

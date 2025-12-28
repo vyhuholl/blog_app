@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}{% if post %}Edit Post{% else %}Create New Post{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-container">
+        <h1>{% if post %}Edit Post{% else %}Create New Post{% endif %}</h1>
+        
+        <form id="post-form">
+            <div class="form-group">
+                <label for="title">Title <span class="required">*</span></label>
+                <input 
+                    type="text" 
+                    id="title" 
+                    name="title" 
+                    required 
+                    maxlength="200"
+                    {% if post %}value="{{ post.title }}"{% endif %}
+                    placeholder="Enter post title"
+                >
+                <span class="error-message" id="title-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="content">Content <span class="required">*</span></label>
+                <textarea 
+                    id="content" 
+                    name="content" 
+                    rows="15" 
+                    required
+                    placeholder="Write your post content..."
+                >{% if post %}{{ post.content }}{% endif %}</textarea>
+                <span class="error-message" id="content-error"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="submit-btn">
+                    {% if post %}Update Post{% else %}Create Post{% endif %}
+                </button>
+                <a href="{% if post %}/posts/{{ post.id }}{% else %}/{% endif %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+
+        <div class="loading" id="loading" style="display: none;">
+            Submitting...
+        </div>
+
+        <div class="success-message" id="success-message" style="display: none;"></div>
+        <div class="error-message" id="error-message" style="display: none;"></div>
+    </div>
+</div>
+
+<script>
+    const postForm = document.getElementById('post-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const loading = document.getElementById('loading');
+    const successMessage = document.getElementById('success-message');
+    const errorMessage = document.getElementById('error-message');
+    const titleInput = document.getElementById('title');
+    const contentInput = document.getElementById('content');
+    const titleError = document.getElementById('title-error');
+    const contentError = document.getElementById('content-error');
+
+    {% if post %}
+    const postId = {{ post.id }};
+    const isEdit = true;
+    {% else %}
+    const isEdit = false;
+    {% endif %}
+
+    // Check if user is authenticated
+    async function checkAuth() {
+        try {
+            const response = await fetch('/api/auth/me', {
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                alert('You must be logged in to create or edit posts');
+                window.location.href = '/login';
+                return false;
+            }
+
+            {% if post %}
+            // If editing, check if user is the author
+            const currentUser = await response.json();
+            if (currentUser.id !== {{ post.author.id }}) {
+                alert('You can only edit your own posts');
+                window.location.href = '/posts/{{ post.id }}';
+                return false;
+            }
+            {% endif %}
+
+            return true;
+        } catch (error) {
+            alert('Authentication error');
+            window.location.href = '/login';
+            return false;
+        }
+    }
+
+    // Validate form
+    function validateForm() {
+        let isValid = true;
+
+        // Clear previous errors
+        titleError.textContent = '';
+        contentError.textContent = '';
+
+        // Validate title
+        const title = titleInput.value.trim();
+        if (!title) {
+            titleError.textContent = 'Title is required';
+            isValid = false;
+        } else if (title.length > 200) {
+            titleError.textContent = 'Title must be 200 characters or less';
+            isValid = false;
+        }
+
+        // Validate content
+        const content = contentInput.value.trim();
+        if (!content) {
+            contentError.textContent = 'Content is required';
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    // Submit form
+    async function submitForm(event) {
+        event.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
+
+        const title = titleInput.value.trim();
+        const content = contentInput.value.trim();
+
+        // Show loading state
+        submitBtn.disabled = true;
+        loading.style.display = 'block';
+        successMessage.style.display = 'none';
+        errorMessage.style.display = 'none';
+
+        try {
+            const url = isEdit ? `/api/posts/${postId}` : '/api/posts';
+            const method = isEdit ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ title, content })
+            });
+
+            loading.style.display = 'none';
+
+            if (response.ok) {
+                const post = await response.json();
+                successMessage.textContent = isEdit ? 'Post updated successfully!' : 'Post created successfully!';
+                successMessage.style.display = 'block';
+                
+                // Redirect to post detail page
+                setTimeout(() => {
+                    window.location.href = `/posts/${post.id}`;
+                }, 1000);
+            } else {
+                const error = await response.json();
+                errorMessage.textContent = error.detail || 'An error occurred';
+                errorMessage.style.display = 'block';
+                submitBtn.disabled = false;
+            }
+        } catch (error) {
+            loading.style.display = 'none';
+            errorMessage.textContent = 'Failed to submit post. Please try again.';
+            errorMessage.style.display = 'block';
+            submitBtn.disabled = false;
+        }
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', async function() {
+        const isAuthenticated = await checkAuth();
+        if (!isAuthenticated) {
+            return;
+        }
+
+        postForm.addEventListener('submit', submitForm);
+
+        // Real-time validation
+        titleInput.addEventListener('blur', validateForm);
+        contentInput.addEventListener('blur', validateForm);
+    });
+</script>
+{% endblock %}
+

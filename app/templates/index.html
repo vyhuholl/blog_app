@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Blog Posts{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="page-header">
+        <h1>Blog Posts</h1>
+        <a href="/posts/new" class="btn btn-primary" id="create-post-btn">Create New Post</a>
+    </header>
+
+    <div class="posts-container" id="posts-container">
+        <div class="loading" id="loading">Loading posts...</div>
+        <div class="posts-list" id="posts-list">
+            <!-- Posts will be dynamically loaded here -->
+        </div>
+        <div class="error-message" id="error-message" style="display: none;"></div>
+    </div>
+
+    <div class="pagination" id="pagination">
+        <!-- Pagination controls will be dynamically added here -->
+    </div>
+</div>
+
+<script>
+    // Load posts on page load
+    let currentPage = 1;
+    const pageSize = 20;
+
+    async function loadPosts(page = 1) {
+        const loading = document.getElementById('loading');
+        const postsContainer = document.getElementById('posts-list');
+        const errorMessage = document.getElementById('error-message');
+        const pagination = document.getElementById('pagination');
+
+        loading.style.display = 'block';
+        errorMessage.style.display = 'none';
+
+        try {
+            const response = await fetch(`/api/posts?page=${page}&page_size=${pageSize}`);
+            
+            if (!response.ok) {
+                throw new Error('Failed to load posts');
+            }
+
+            const data = await response.json();
+            loading.style.display = 'none';
+
+            // Render posts
+            if (data.items.length === 0) {
+                postsContainer.innerHTML = '<p class="no-posts">No posts yet. Be the first to create one!</p>';
+            } else {
+                postsContainer.innerHTML = data.items.map(post => `
+                    <article class="post-card">
+                        <h2><a href="/posts/${post.id}">${escapeHtml(post.title)}</a></h2>
+                        <div class="post-meta">
+                            <span class="post-author">By ${escapeHtml(post.author.username)}</span>
+                            <span class="post-date">${formatDate(post.created_at)}</span>
+                        </div>
+                    </article>
+                `).join('');
+            }
+
+            // Render pagination
+            renderPagination(data.page, data.total_pages);
+            currentPage = page;
+
+        } catch (error) {
+            loading.style.display = 'none';
+            errorMessage.textContent = error.message;
+            errorMessage.style.display = 'block';
+        }
+    }
+
+    function renderPagination(currentPage, totalPages) {
+        const pagination = document.getElementById('pagination');
+        
+        if (totalPages <= 1) {
+            pagination.innerHTML = '';
+            return;
+        }
+
+        let paginationHTML = '<div class="pagination-controls">';
+        
+        // Previous button
+        if (currentPage > 1) {
+            paginationHTML += `<button class="btn btn-secondary" onclick="loadPosts(${currentPage - 1})">Previous</button>`;
+        }
+
+        // Page numbers
+        paginationHTML += `<span class="page-info">Page ${currentPage} of ${totalPages}</span>`;
+
+        // Next button
+        if (currentPage < totalPages) {
+            paginationHTML += `<button class="btn btn-secondary" onclick="loadPosts(${currentPage + 1})">Next</button>`;
+        }
+
+        paginationHTML += '</div>';
+        pagination.innerHTML = paginationHTML;
+    }
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Check if user is logged in for "Create Post" button
+    async function checkAuthStatus() {
+        try {
+            const response = await fetch('/api/auth/me', {
+                credentials: 'include'
+            });
+            
+            const createBtn = document.getElementById('create-post-btn');
+            if (!response.ok) {
+                // User not logged in, hide create button
+                createBtn.style.display = 'none';
+            }
+        } catch (error) {
+            document.getElementById('create-post-btn').style.display = 'none';
+        }
+    }
+
+    // Load posts when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        loadPosts(1);
+        checkAuthStatus();
+    });
+</script>
+{% endblock %}
+
