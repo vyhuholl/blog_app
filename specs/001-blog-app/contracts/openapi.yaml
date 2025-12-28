@@ -1,0 +1,825 @@
+openapi: 3.1.0
+info:
+  title: Blog Application Platform API
+  description: |
+    RESTful API for a blog platform enabling user authentication, post management, and commenting.
+    
+    ## Authentication
+    This API uses JWT token-based authentication with HTTP-only cookies.
+    - Register or login to receive an authentication token
+    - Token is automatically included in subsequent requests via cookie
+    - Token expires after 24 hours
+    
+    ## Rate Limiting
+    Future enhancement - not implemented in v1.
+    
+  version: 1.0.0
+  contact:
+    name: Blog App Team
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:8000
+    description: Development server
+  - url: https://api.blogapp.example.com
+    description: Production server
+
+tags:
+  - name: Authentication
+    description: User registration, login, and session management
+  - name: Posts
+    description: Blog post creation, reading, updating, and deletion
+  - name: Comments
+    description: Comment creation, reading, updating, and deletion
+  - name: Users
+    description: User profile information
+
+paths:
+  # ==================== AUTHENTICATION ====================
+  /api/auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user account
+      description: Creates a new user account with username, email, and password. Username and email must be unique.
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+            examples:
+              validUser:
+                summary: Valid registration
+                value:
+                  username: johndoe
+                  email: john@example.com
+                  password: securepass123
+      responses:
+        '201':
+          description: User successfully registered and logged in
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: access_token=eyJhbGc...; HttpOnly; Path=/; SameSite=Lax
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Validation error (invalid input format)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                invalidEmail:
+                  value:
+                    detail: "Invalid email format"
+                shortPassword:
+                  value:
+                    detail: "Password must be at least 8 characters"
+        '409':
+          description: Conflict - username or email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                detail: "Username already exists"
+
+  /api/auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login to existing account
+      description: Authenticate with username and password. Returns JWT token in HTTP-only cookie.
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+            example:
+              username: johndoe
+              password: securepass123
+      responses:
+        '200':
+          description: Successfully authenticated
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: access_token=eyJhbGc...; HttpOnly; Path=/; SameSite=Lax
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                detail: "Invalid username or password"
+
+  /api/auth/logout:
+    post:
+      tags:
+        - Authentication
+      summary: Logout from current session
+      description: Invalidates the current JWT token by clearing the cookie.
+      operationId: logoutUser
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Successfully logged out
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: access_token=; HttpOnly; Path=/; Max-Age=0
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Successfully logged out"
+
+  /api/auth/me:
+    get:
+      tags:
+        - Authentication
+      summary: Get current user information
+      description: Returns the profile of the currently authenticated user.
+      operationId: getCurrentUser
+      security:
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Current user information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                detail: "Not authenticated"
+
+  # ==================== POSTS ====================
+  /api/posts:
+    get:
+      tags:
+        - Posts
+      summary: List all blog posts
+      description: |
+        Returns a paginated list of all blog posts, ordered by creation date (newest first).
+        Accessible to all users (including anonymous).
+      operationId: listPosts
+      parameters:
+        - name: page
+          in: query
+          description: Page number (1-indexed)
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: page_size
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
+      responses:
+        '200':
+          description: Paginated list of posts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostListResponse'
+
+    post:
+      tags:
+        - Posts
+      summary: Create a new blog post
+      description: Creates a new blog post. Requires authentication.
+      operationId: createPost
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostCreate'
+            example:
+              title: "My First Blog Post"
+              content: "This is the content of my first blog post. It can be as long as needed."
+      responses:
+        '201':
+          description: Post successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/posts/{post_id}:
+    get:
+      tags:
+        - Posts
+      summary: Get a single blog post
+      description: |
+        Returns detailed information about a specific post, including author information.
+        Accessible to all users (including anonymous).
+      operationId: getPost
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          description: Post ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Post details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                detail: "Post not found"
+
+    put:
+      tags:
+        - Posts
+      summary: Update a blog post
+      description: Updates an existing post. Only the post author can update their own posts.
+      operationId: updatePost
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          description: Post ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostUpdate'
+            example:
+              title: "Updated Post Title"
+              content: "Updated content with more details."
+      responses:
+        '200':
+          description: Post successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Not authorized to update this post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                detail: "You can only update your own posts"
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Posts
+      summary: Delete a blog post
+      description: |
+        Deletes a post and all associated comments. Only the post author can delete their own posts.
+      operationId: deletePost
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          description: Post ID
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Post successfully deleted
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Not authorized to delete this post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # ==================== COMMENTS ====================
+  /api/posts/{post_id}/comments:
+    get:
+      tags:
+        - Comments
+      summary: List comments for a post
+      description: |
+        Returns all comments for a specific post, ordered chronologically (oldest first).
+        Accessible to all users (including anonymous).
+      operationId: listComments
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          description: Post ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommentResponse'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags:
+        - Comments
+      summary: Add a comment to a post
+      description: Creates a new comment on a specific post. Requires authentication.
+      operationId: createComment
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          description: Post ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentCreate'
+            example:
+              content: "Great post! Thanks for sharing."
+      responses:
+        '201':
+          description: Comment successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/comments/{comment_id}:
+    put:
+      tags:
+        - Comments
+      summary: Update a comment
+      description: Updates an existing comment. Only the comment author can update their own comments.
+      operationId: updateComment
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: comment_id
+          in: path
+          required: true
+          description: Comment ID
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentUpdate'
+            example:
+              content: "Updated comment text."
+      responses:
+        '200':
+          description: Comment successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Not authorized to update this comment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Comment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Comments
+      summary: Delete a comment
+      description: Deletes a comment. Only the comment author can delete their own comments.
+      operationId: deleteComment
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: comment_id
+          in: path
+          required: true
+          description: Comment ID
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Comment successfully deleted
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Not authorized to delete this comment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Comment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  # ==================== USERS ====================
+  /api/users/{user_id}:
+    get:
+      tags:
+        - Users
+      summary: Get user profile
+      description: |
+        Returns public profile information for a specific user.
+        Accessible to all users (including anonymous).
+      operationId: getUserProfile
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: User ID
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: access_token
+      description: JWT token stored in HTTP-only cookie
+
+  schemas:
+    # ==================== USER SCHEMAS ====================
+    UserRegister:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 30
+          pattern: '^[a-zA-Z0-9_]+$'
+          description: Alphanumeric username with underscores
+          example: johndoe
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: Valid email address
+          example: john@example.com
+        password:
+          type: string
+          minLength: 8
+          format: password
+          description: Password (min 8 characters)
+          example: securepass123
+
+    UserLogin:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          example: johndoe
+        password:
+          type: string
+          format: password
+          example: securepass123
+
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: johndoe
+        email:
+          type: string
+          format: email
+          example: john@example.com
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-12-28T10:00:00Z"
+
+    UserPublic:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: johndoe
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-12-28T10:00:00Z"
+
+    # ==================== POST SCHEMAS ====================
+    PostCreate:
+      type: object
+      required:
+        - title
+        - content
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: Post title
+          example: "My First Blog Post"
+        content:
+          type: string
+          minLength: 1
+          description: Post content (plain text)
+          example: "This is the content of my blog post. It can be as long as needed."
+
+    PostUpdate:
+      type: object
+      required:
+        - title
+        - content
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          example: "Updated Post Title"
+        content:
+          type: string
+          minLength: 1
+          example: "Updated content."
+
+    PostResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "My First Blog Post"
+        content:
+          type: string
+          example: "This is the content of my blog post."
+        author:
+          $ref: '#/components/schemas/UserPublic'
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-12-28T10:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2025-12-28T10:30:00Z"
+
+    PostListItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "My First Blog Post"
+        author:
+          $ref: '#/components/schemas/UserPublic'
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-12-28T10:00:00Z"
+
+    PostListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PostListItem'
+        total:
+          type: integer
+          description: Total number of posts
+          example: 100
+        page:
+          type: integer
+          description: Current page number
+          example: 1
+        page_size:
+          type: integer
+          description: Items per page
+          example: 20
+        total_pages:
+          type: integer
+          description: Total number of pages
+          example: 5
+
+    # ==================== COMMENT SCHEMAS ====================
+    CommentCreate:
+      type: object
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          description: Comment text
+          example: "Great post! Thanks for sharing."
+
+    CommentUpdate:
+      type: object
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          example: "Updated comment text."
+
+    CommentResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        content:
+          type: string
+          example: "Great post! Thanks for sharing."
+        author:
+          $ref: '#/components/schemas/UserPublic'
+        post_id:
+          type: integer
+          example: 1
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-12-28T10:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2025-12-28T10:15:00Z"
+
+    # ==================== ERROR SCHEMA ====================
+    Error:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: Error message describing what went wrong
+          example: "Resource not found"
+
