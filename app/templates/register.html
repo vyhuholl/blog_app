@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Blog App{% endblock %}
+
+{% block meta_description %}Create a new account to start sharing your blog posts{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <h1>Create Your Account</h1>
+    
+    <form id="register-form" class="auth-form" method="post" action="/api/auth/register" novalidate>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input 
+                type="text" 
+                id="username" 
+                name="username" 
+                required 
+                minlength="3" 
+                maxlength="30"
+                pattern="[a-zA-Z0-9_]+"
+                aria-required="true"
+                aria-describedby="username-help username-error"
+            >
+            <small id="username-help" class="form-help">
+                3-30 characters, letters, numbers, and underscores only
+            </small>
+            <span id="username-error" class="form-error" role="alert"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                required
+                aria-required="true"
+                aria-describedby="email-help email-error"
+            >
+            <small id="email-help" class="form-help">
+                We'll never share your email with anyone else
+            </small>
+            <span id="email-error" class="form-error" role="alert"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                required 
+                minlength="8"
+                aria-required="true"
+                aria-describedby="password-help password-error"
+            >
+            <small id="password-help" class="form-help">
+                At least 8 characters
+            </small>
+            <span id="password-error" class="form-error" role="alert"></span>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <span class="btn-text">Register</span>
+                <span class="btn-loader" hidden aria-hidden="true">Loading...</span>
+            </button>
+        </div>
+
+        <div id="form-message" class="form-message" role="status" aria-live="polite"></div>
+    </form>
+
+    <p class="auth-footer">
+        Already have an account? <a href="/login">Login here</a>
+    </p>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Initialize form validation for registration
+    if (typeof window.FormValidation !== 'undefined') {
+        window.FormValidation.initRegisterForm();
+    }
+</script>
+{% endblock %}
+

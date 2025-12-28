@@ -5,7 +5,7 @@ This module provides functions for password hashing, JWT token management,
 user registration, and login logic.
 """
 
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 
 import bcrypt
 import jwt
@@ -55,7 +55,7 @@ def create_access_token(user_id: int) -> str:
         Encoded JWT token string
     """
     expires_delta = timedelta(minutes=settings.jwt_expire_minutes)
-    expire = datetime.utcnow() + expires_delta
+    expire = datetime.now(UTC) + expires_delta
 
     payload = {"user_id": user_id, "exp": expire}
 

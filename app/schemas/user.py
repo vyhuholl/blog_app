@@ -6,7 +6,7 @@ This module defines schemas for user registration, login, and responses.
 
 from datetime import datetime
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class UserRegister(BaseModel):
@@ -27,26 +27,20 @@ class UserLogin(BaseModel):
 class UserResponse(BaseModel):
     """Schema for authenticated user response (includes email)."""
 
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     username: str
     email: str
     created_at: datetime
 
-    class Config:
-        """Pydantic configuration."""
-
-        from_attributes = True
-
 
 class UserPublic(BaseModel):
     """Schema for public user profile (no sensitive data)."""
 
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     username: str
     created_at: datetime
-
-    class Config:
-        """Pydantic configuration."""
-
-        from_attributes = True
 

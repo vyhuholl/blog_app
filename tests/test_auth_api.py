@@ -110,8 +110,12 @@ class TestAuthLogout:
         assert response.status_code == 200
         assert "Successfully logged out" in response.json()["message"]
 
-        # Check cookie was cleared
-        assert response.cookies.get("access_token") == ""
+        # Verify that the logout response sets an expired/empty cookie
+        # The set-cookie header should be present with max-age=0
+        set_cookie_header = response.headers.get("set-cookie")
+        assert set_cookie_header is not None
+        assert "access_token" in set_cookie_header
+        assert "max-age=0" in set_cookie_header.lower() or "expires" in set_cookie_header.lower()
 
 
 class TestAuthMe:

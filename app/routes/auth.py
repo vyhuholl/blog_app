@@ -70,7 +70,14 @@ async def logout(response: Response):
 
     Clears the JWT token cookie.
     """
-    response.delete_cookie(key="access_token")
+    response.set_cookie(
+        key="access_token",
+        value="",
+        httponly=True,
+        samesite="lax",
+        secure=False,
+        max_age=0,  # Expire immediately
+    )
     return {"message": "Successfully logged out"}
 
 

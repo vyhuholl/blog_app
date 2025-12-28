@@ -9,8 +9,9 @@ import asyncio
 from collections.abc import Generator
 
 import pytest
+import pytest_asyncio
 from fastapi.testclient import TestClient
-from tortoise.contrib.test import finalizer, initializer
+from tortoise import Tortoise
 
 from app.main import app
 from app.models.comment import Comment
@@ -28,16 +29,16 @@ def event_loop():
     loop.close()
 
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest_asyncio.fixture(scope="function", autouse=True)
 async def init_db():
     """Initialize database for tests with in-memory SQLite."""
-    await initializer(
-        modules=["app.models.user", "app.models.post", "app.models.comment"],
+    await Tortoise.init(
         db_url="sqlite://:memory:",
-        app_label="models",
+        modules={"models": ["app.models.user", "app.models.post", "app.models.comment"]},
     )
+    await Tortoise.generate_schemas()
     yield
-    await finalizer()
+    await Tortoise.close_connections()
 
 
 @pytest.fixture
@@ -46,7 +47,7 @@ def client() -> TestClient:
     return TestClient(app)
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def test_user():
     """Create a test user."""
     password_hash = await hash_password("testpass123")
@@ -56,7 +57,7 @@ async def test_user():
     return user
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def test_user_2():
     """Create a second test user."""
     password_hash = await hash_password("testpass456")
@@ -66,7 +67,7 @@ async def test_user_2():
     return user
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def test_post(test_user):
     """Create a test post."""
     post = await Post.create(
@@ -75,7 +76,7 @@ async def test_post(test_user):
     return post
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def test_comment(test_post, test_user_2):
     """Create a test comment."""
     comment = await Comment.create(

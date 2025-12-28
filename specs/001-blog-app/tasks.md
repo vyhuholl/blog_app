@@ -113,51 +113,51 @@ This task breakdown organizes implementation by user story to enable independent
 
 ### Authentication Service Layer
 
-- [ ] T035 [US1] Create app/services/__init__.py for service exports
-- [ ] T036 [US1] Implement password hashing functions in app/services/auth.py (hash_password, verify_password using bcrypt)
-- [ ] T037 [US1] Implement JWT token creation in app/services/auth.py (create_access_token with user_id claim)
-- [ ] T038 [US1] Implement JWT token decoding/verification in app/services/auth.py (decode_access_token)
-- [ ] T039 [US1] Implement user registration logic in app/services/auth.py (check uniqueness, hash password, create user)
-- [ ] T040 [US1] Implement user login logic in app/services/auth.py (verify credentials, return user)
-- [ ] T041 [US1] Add unit tests for password hashing in tests/test_auth_service.py
-- [ ] T042 [US1] Add unit tests for JWT token encode/decode in tests/test_auth_service.py
+- [X] T035 [US1] Create app/services/__init__.py for service exports
+- [X] T036 [US1] Implement password hashing functions in app/services/auth.py (hash_password, verify_password using bcrypt)
+- [X] T037 [US1] Implement JWT token creation in app/services/auth.py (create_access_token with user_id claim)
+- [X] T038 [US1] Implement JWT token decoding/verification in app/services/auth.py (decode_access_token)
+- [X] T039 [US1] Implement user registration logic in app/services/auth.py (check uniqueness, hash password, create user)
+- [X] T040 [US1] Implement user login logic in app/services/auth.py (verify credentials, return user)
+- [X] T041 [US1] Add unit tests for password hashing in tests/test_auth_service.py
+- [X] T042 [US1] Add unit tests for JWT token encode/decode in tests/test_auth_service.py
 
 ### Authentication Dependency
 
-- [ ] T043 [US1] Create app/dependencies/__init__.py for dependency exports
-- [ ] T044 [US1] Implement get_current_user dependency in app/dependencies/auth.py (extract token from cookie, decode, fetch user)
-- [ ] T045 [US1] Add exception handling for invalid/expired tokens in app/dependencies/auth.py
-- [ ] T046 [US1] Add unit tests for authentication dependency in tests/test_auth_dependency.py
+- [X] T043 [US1] Create app/dependencies/__init__.py for dependency exports
+- [X] T044 [US1] Implement get_current_user dependency in app/dependencies/auth.py (extract token from cookie, decode, fetch user)
+- [X] T045 [US1] Add exception handling for invalid/expired tokens in app/dependencies/auth.py
+- [X] T046 [US1] Add unit tests for authentication dependency in tests/test_auth_dependency.py
 
 ### Authentication API Routes
 
-- [ ] T047 [US1] Create app/routes/__init__.py with router registration
-- [ ] T048 [US1] Implement POST /api/auth/register endpoint in app/routes/auth.py (validate input, call service, set cookie, return user)
-- [ ] T049 [US1] Implement POST /api/auth/login endpoint in app/routes/auth.py (authenticate, set cookie, return user)
-- [ ] T050 [US1] Implement POST /api/auth/logout endpoint in app/routes/auth.py (clear cookie)
-- [ ] T051 [US1] Implement GET /api/auth/me endpoint in app/routes/auth.py (return current user using dependency)
-- [ ] T052 [US1] Register auth router in app/main.py
-- [ ] T053 [US1] Add integration test for user registration success in tests/test_auth_api.py
-- [ ] T054 [US1] Add integration test for user registration with duplicate username in tests/test_auth_api.py
-- [ ] T055 [US1] Add integration test for user registration with duplicate email in tests/test_auth_api.py
-- [ ] T056 [US1] Add integration test for user login success in tests/test_auth_api.py
-- [ ] T057 [US1] Add integration test for user login with invalid credentials in tests/test_auth_api.py
-- [ ] T058 [US1] Add integration test for logout clears cookie in tests/test_auth_api.py
-- [ ] T059 [US1] Add integration test for GET /api/auth/me with valid token in tests/test_auth_api.py
-- [ ] T060 [US1] Add integration test for GET /api/auth/me without token returns 401 in tests/test_auth_api.py
+- [X] T047 [US1] Create app/routes/__init__.py with router registration
+- [X] T048 [US1] Implement POST /api/auth/register endpoint in app/routes/auth.py (validate input, call service, set cookie, return user)
+- [X] T049 [US1] Implement POST /api/auth/login endpoint in app/routes/auth.py (authenticate, set cookie, return user)
+- [X] T050 [US1] Implement POST /api/auth/logout endpoint in app/routes/auth.py (clear cookie)
+- [X] T051 [US1] Implement GET /api/auth/me endpoint in app/routes/auth.py (return current user using dependency)
+- [X] T052 [US1] Register auth router in app/main.py
+- [X] T053 [US1] Add integration test for user registration success in tests/test_auth_api.py
+- [X] T054 [US1] Add integration test for user registration with duplicate username in tests/test_auth_api.py
+- [X] T055 [US1] Add integration test for user registration with duplicate email in tests/test_auth_api.py
+- [X] T056 [US1] Add integration test for user login success in tests/test_auth_api.py
+- [X] T057 [US1] Add integration test for user login with invalid credentials in tests/test_auth_api.py
+- [X] T058 [US1] Add integration test for logout clears cookie in tests/test_auth_api.py
+- [X] T059 [US1] Add integration test for GET /api/auth/me with valid token in tests/test_auth_api.py
+- [X] T060 [US1] Add integration test for GET /api/auth/me without token returns 401 in tests/test_auth_api.py
 
 ### Authentication Frontend Templates
 
-- [ ] T061 [US1] Create app/templates/base.html with HTML5 semantic structure, meta tags, and blocks for content
-- [ ] T062 [US1] Create app/templates/register.html with registration form extending base.html
-- [ ] T063 [US1] Create app/templates/login.html with login form extending base.html
-- [ ] T064 [US1] Add form validation JavaScript in static/js/main.js for registration (client-side)
-- [ ] T065 [US1] Add form validation JavaScript in static/js/main.js for login (client-side)
-- [ ] T066 [US1] Add CSS styling for authentication forms in static/css/style.css
-- [ ] T067 [US1] Create template routes in app/routes/pages.py (GET /register, GET /login)
-- [ ] T068 [US1] Register pages router in app/main.py
-- [ ] T069 [US1] Test registration page loads and form submits successfully
-- [ ] T070 [US1] Test login page loads and form submits successfully
+- [X] T061 [US1] Create app/templates/base.html with HTML5 semantic structure, meta tags, and blocks for content
+- [X] T062 [US1] Create app/templates/register.html with registration form extending base.html
+- [X] T063 [US1] Create app/templates/login.html with login form extending base.html
+- [X] T064 [US1] Add form validation JavaScript in static/js/main.js for registration (client-side)
+- [X] T065 [US1] Add form validation JavaScript in static/js/main.js for login (client-side)
+- [X] T066 [US1] Add CSS styling for authentication forms in static/css/style.css
+- [X] T067 [US1] Create template routes in app/routes/pages.py (GET /register, GET /login)
+- [X] T068 [US1] Register pages router in app/main.py
+- [X] T069 [US1] Test registration page loads and form submits successfully
+- [X] T070 [US1] Test login page loads and form submits successfully
 
 **US1 Exit Criteria**:
 - ✅ User registration works with validation (username, email unique, password >= 8 chars)

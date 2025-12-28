@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Blog App{% endblock %}
+
+{% block meta_description %}Login to your account to manage your blog posts{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <h1>Login to Your Account</h1>
+    
+    <form id="login-form" class="auth-form" method="post" action="/api/auth/login" novalidate>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input 
+                type="text" 
+                id="username" 
+                name="username" 
+                required
+                autocomplete="username"
+                aria-required="true"
+                aria-describedby="username-error"
+            >
+            <span id="username-error" class="form-error" role="alert"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                required
+                autocomplete="current-password"
+                aria-required="true"
+                aria-describedby="password-error"
+            >
+            <span id="password-error" class="form-error" role="alert"></span>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <span class="btn-text">Login</span>
+                <span class="btn-loader" hidden aria-hidden="true">Loading...</span>
+            </button>
+        </div>
+
+        <div id="form-message" class="form-message" role="status" aria-live="polite"></div>
+    </form>
+
+    <p class="auth-footer">
+        Don't have an account? <a href="/register">Register here</a>
+    </p>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Initialize form validation for login
+    if (typeof window.FormValidation !== 'undefined') {
+        window.FormValidation.initLoginForm();
+    }
+</script>
+{% endblock %}
+
