@@ -188,47 +188,47 @@ This task breakdown organizes implementation by user story to enable independent
 
 ### Post Service Layer
 
-- [ ] T071 [US2] Implement create_post function in app/services/post.py (validate, create, return with author)
-- [ ] T072 [US2] Implement get_post_by_id function in app/services/post.py (fetch with prefetch_related for author)
-- [ ] T073 [US2] Implement list_posts function in app/services/post.py (paginated, ordered by created_at DESC, prefetch author)
-- [ ] T074 [US2] Implement update_post function in app/services/post.py (check ownership, update, return)
-- [ ] T075 [US2] Implement delete_post function in app/services/post.py (check ownership, delete cascade)
-- [ ] T076 [US2] Add authorization helper check_post_author in app/services/post.py
-- [ ] T077 [US2] Add unit tests for create_post in tests/test_post_service.py
-- [ ] T078 [US2] Add unit tests for list_posts pagination in tests/test_post_service.py
-- [ ] T079 [US2] Add unit tests for update_post authorization in tests/test_post_service.py
-- [ ] T080 [US2] Add unit tests for delete_post authorization in tests/test_post_service.py
+- [X] T071 [US2] Implement create_post function in app/services/post.py (validate, create, return with author)
+- [X] T072 [US2] Implement get_post_by_id function in app/services/post.py (fetch with prefetch_related for author)
+- [X] T073 [US2] Implement list_posts function in app/services/post.py (paginated, ordered by created_at DESC, prefetch author)
+- [X] T074 [US2] Implement update_post function in app/services/post.py (check ownership, update, return)
+- [X] T075 [US2] Implement delete_post function in app/services/post.py (check ownership, delete cascade)
+- [X] T076 [US2] Add authorization helper check_post_author in app/services/post.py
+- [X] T077 [US2] Add unit tests for create_post in tests/test_post_service.py
+- [X] T078 [US2] Add unit tests for list_posts pagination in tests/test_post_service.py
+- [X] T079 [US2] Add unit tests for update_post authorization in tests/test_post_service.py
+- [X] T080 [US2] Add unit tests for delete_post authorization in tests/test_post_service.py
 
 ### Post API Routes
 
-- [ ] T081 [US2] Implement GET /api/posts endpoint in app/routes/posts.py (list with pagination parameters)
-- [ ] T082 [US2] Implement POST /api/posts endpoint in app/routes/posts.py (requires auth, call service)
-- [ ] T083 [US2] Implement GET /api/posts/{post_id} endpoint in app/routes/posts.py (public, fetch single post)
-- [ ] T084 [US2] Implement PUT /api/posts/{post_id} endpoint in app/routes/posts.py (requires auth, check ownership)
-- [ ] T085 [US2] Implement DELETE /api/posts/{post_id} endpoint in app/routes/posts.py (requires auth, check ownership)
-- [ ] T086 [US2] Register posts router in app/main.py
-- [ ] T087 [US2] Add integration test for POST /api/posts success in tests/test_posts_api.py
-- [ ] T088 [US2] Add integration test for POST /api/posts without auth returns 401 in tests/test_posts_api.py
-- [ ] T089 [US2] Add integration test for GET /api/posts pagination in tests/test_posts_api.py
-- [ ] T090 [US2] Add integration test for GET /api/posts/{id} success in tests/test_posts_api.py
-- [ ] T091 [US2] Add integration test for GET /api/posts/{id} not found returns 404 in tests/test_posts_api.py
-- [ ] T092 [US2] Add integration test for PUT /api/posts/{id} by author success in tests/test_posts_api.py
-- [ ] T093 [US2] Add integration test for PUT /api/posts/{id} by non-author returns 403 in tests/test_posts_api.py
-- [ ] T094 [US2] Add integration test for DELETE /api/posts/{id} by author success in tests/test_posts_api.py
-- [ ] T095 [US2] Add integration test for DELETE /api/posts/{id} by non-author returns 403 in tests/test_posts_api.py
+- [X] T081 [US2] Implement GET /api/posts endpoint in app/routes/posts.py (list with pagination parameters)
+- [X] T082 [US2] Implement POST /api/posts endpoint in app/routes/posts.py (requires auth, call service)
+- [X] T083 [US2] Implement GET /api/posts/{post_id} endpoint in app/routes/posts.py (public, fetch single post)
+- [X] T084 [US2] Implement PUT /api/posts/{post_id} endpoint in app/routes/posts.py (requires auth, check ownership)
+- [X] T085 [US2] Implement DELETE /api/posts/{post_id} endpoint in app/routes/posts.py (requires auth, check ownership)
+- [X] T086 [US2] Register posts router in app/main.py
+- [X] T087 [US2] Add integration test for POST /api/posts success in tests/test_posts_api.py
+- [X] T088 [US2] Add integration test for POST /api/posts without auth returns 401 in tests/test_posts_api.py
+- [X] T089 [US2] Add integration test for GET /api/posts pagination in tests/test_posts_api.py
+- [X] T090 [US2] Add integration test for GET /api/posts/{id} success in tests/test_posts_api.py
+- [X] T091 [US2] Add integration test for GET /api/posts/{id} not found returns 404 in tests/test_posts_api.py
+- [X] T092 [US2] Add integration test for PUT /api/posts/{id} by author success in tests/test_posts_api.py
+- [X] T093 [US2] Add integration test for PUT /api/posts/{id} by non-author returns 403 in tests/test_posts_api.py
+- [X] T094 [US2] Add integration test for DELETE /api/posts/{id} by author success in tests/test_posts_api.py
+- [X] T095 [US2] Add integration test for DELETE /api/posts/{id} by non-author returns 403 in tests/test_posts_api.py
 
 ### Post Frontend Templates
 
-- [ ] T096 [US2] Create app/templates/index.html for post list view with pagination controls
-- [ ] T097 [US2] Create app/templates/post_detail.html for single post view with edit/delete buttons (if author)
-- [ ] T098 [US2] Create app/templates/post_form.html for create/edit post form
-- [ ] T099 [US2] Add pagination JavaScript in static/js/main.js for loading additional posts
-- [ ] T100 [US2] Add post delete confirmation JavaScript in static/js/main.js
-- [ ] T101 [US2] Add CSS styling for post list in static/css/style.css
-- [ ] T102 [US2] Add CSS styling for post detail view in static/css/style.css
-- [ ] T103 [US2] Add CSS styling for post form in static/css/style.css
-- [ ] T104 [US2] Add responsive design media queries for mobile in static/css/style.css
-- [ ] T105 [US2] Create template routes in app/routes/pages.py (GET /, GET /posts/{id}, GET /posts/new, GET /posts/{id}/edit)
+- [X] T096 [US2] Create app/templates/index.html for post list view with pagination controls
+- [X] T097 [US2] Create app/templates/post_detail.html for single post view with edit/delete buttons (if author)
+- [X] T098 [US2] Create app/templates/post_form.html for create/edit post form
+- [X] T099 [US2] Add pagination JavaScript in static/js/main.js for loading additional posts
+- [X] T100 [US2] Add post delete confirmation JavaScript in static/js/main.js
+- [X] T101 [US2] Add CSS styling for post list in static/css/style.css
+- [X] T102 [US2] Add CSS styling for post detail view in static/css/style.css
+- [X] T103 [US2] Add CSS styling for post form in static/css/style.css
+- [X] T104 [US2] Add responsive design media queries for mobile in static/css/style.css
+- [X] T105 [US2] Create template routes in app/routes/pages.py (GET /, GET /posts/{id}, GET /posts/new, GET /posts/{id}/edit)
 - [ ] T106 [US2] Test post list page loads with pagination
 - [ ] T107 [US2] Test post detail page displays correctly
 - [ ] T108 [US2] Test post create form submits successfully

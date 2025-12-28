@@ -455,6 +455,335 @@ footer {
 }
 
 /* ============================================
+   BLOG POST COMPONENTS
+   ============================================ */
+
+/* Page Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-2xl);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.page-header h1 {
+  margin-bottom: 0;
+}
+
+/* Post List */
+.posts-container {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.posts-list {
+  display: grid;
+  gap: var(--spacing-lg);
+}
+
+.post-card {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.post-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.post-card h2 {
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-2xl);
+}
+
+.post-card h2 a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.post-card h2 a:hover {
+  color: var(--color-primary);
+}
+
+.post-meta {
+  display: flex;
+  gap: var(--spacing-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-light);
+  flex-wrap: wrap;
+}
+
+.post-author::before {
+  content: "👤 ";
+}
+
+.post-date::before {
+  content: "📅 ";
+}
+
+.post-updated {
+  font-style: italic;
+}
+
+.no-posts {
+  text-align: center;
+  color: var(--color-text-light);
+  padding: var(--spacing-2xl);
+  background-color: var(--color-background-alt);
+  border-radius: var(--radius-lg);
+}
+
+/* Post Detail */
+.post-detail {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-2xl);
+  margin-bottom: var(--spacing-2xl);
+}
+
+.post-header {
+  margin-bottom: var(--spacing-xl);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.post-header h1 {
+  margin-bottom: var(--spacing-md);
+  color: var(--color-text);
+}
+
+.post-content {
+  font-size: var(--font-size-lg);
+  line-height: 1.8;
+  color: var(--color-text);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.post-actions {
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.btn-secondary {
+  background-color: var(--color-background-alt);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-border);
+}
+
+.btn-danger {
+  background-color: var(--color-danger);
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #dc2626;
+}
+
+/* Post Form */
+.form-container {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-2xl);
+}
+
+.form-container h1 {
+  margin-bottom: var(--spacing-xl);
+}
+
+.form-container textarea {
+  resize: vertical;
+  min-height: 300px;
+}
+
+.required {
+  color: var(--color-danger);
+}
+
+.error-message {
+  display: block;
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-danger);
+}
+
+.error-message:empty {
+  display: none;
+}
+
+.success-message {
+  padding: var(--spacing-md);
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.success-message:empty {
+  display: none;
+}
+
+.loading {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-light);
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-2xl);
+}
+
+.pagination-controls {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.page-info {
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--color-text-light);
+  font-size: var(--font-size-sm);
+}
+
+/* Comments Section */
+.comments-section {
+  margin-top: var(--spacing-2xl);
+  padding-top: var(--spacing-2xl);
+  border-top: 2px solid var(--color-border);
+}
+
+.comments-section h2 {
+  margin-bottom: var(--spacing-xl);
+}
+
+.comments-list {
+  display: grid;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.comment {
+  background-color: var(--color-background-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+}
+
+.comment-header {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+.comment-author {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.comment-date {
+  color: var(--color-text-light);
+}
+
+.comment-content {
+  color: var(--color-text);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.comment-actions {
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.btn-text {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-family: inherit;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.btn-text:hover {
+  color: var(--color-primary-dark);
+}
+
+.btn-danger-text {
+  color: var(--color-danger);
+}
+
+.btn-danger-text:hover {
+  color: #dc2626;
+}
+
+.no-comments {
+  text-align: center;
+  color: var(--color-text-light);
+  padding: var(--spacing-xl);
+  background-color: var(--color-background-alt);
+  border-radius: var(--radius-md);
+}
+
+.comment-form {
+  background-color: var(--color-background-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
+}
+
+.comment-form h3 {
+  margin-bottom: var(--spacing-lg);
+}
+
+.comment-form textarea {
+  width: 100%;
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.comment-form textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.comment-form button {
+  margin-top: var(--spacing-md);
+}
+
+/* ============================================
    RESPONSIVE BREAKPOINTS
    ============================================ */
 
@@ -470,6 +799,11 @@ footer {
   
   .container {
     padding: 0 var(--spacing-lg);
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: var(--spacing-md);
   }
 }
 

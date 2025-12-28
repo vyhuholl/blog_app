@@ -67,6 +67,13 @@ async def test_user_2():
     return user
 
 
+# Alias for test_user_2
+@pytest_asyncio.fixture
+async def test_user2(test_user_2):
+    """Alias for test_user_2 for consistency."""
+    return test_user_2
+
+
 @pytest_asyncio.fixture
 async def test_post(test_user):
     """Create a test post."""

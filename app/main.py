@@ -15,7 +15,7 @@ from fastapi.templating import Jinja2Templates
 from tortoise.contrib.fastapi import register_tortoise
 
 from app.config import settings
-from app.routes import auth, pages
+from app.routes import auth, comments, pages, posts, users
 
 
 @asynccontextmanager
@@ -89,9 +89,15 @@ async def health_check():
 # Register authentication routes
 app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
 
+# Register post routes
+app.include_router(posts.router)
+
+# Register comment routes
+app.include_router(comments.router)
+
+# Register user routes
+app.include_router(users.router)
+
 # Register page routes
 app.include_router(pages.router, tags=["Pages"])
-
-
-# Import and register additional routers (will be added in later phases)
 
