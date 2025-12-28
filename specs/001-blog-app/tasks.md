@@ -229,10 +229,10 @@ This task breakdown organizes implementation by user story to enable independent
 - [X] T103 [US2] Add CSS styling for post form in static/css/style.css
 - [X] T104 [US2] Add responsive design media queries for mobile in static/css/style.css
 - [X] T105 [US2] Create template routes in app/routes/pages.py (GET /, GET /posts/{id}, GET /posts/new, GET /posts/{id}/edit)
-- [ ] T106 [US2] Test post list page loads with pagination
-- [ ] T107 [US2] Test post detail page displays correctly
-- [ ] T108 [US2] Test post create form submits successfully
-- [ ] T109 [US2] Test post edit form submits successfully
+- [X] T106 [US2] Test post list page loads with pagination
+- [X] T107 [US2] Test post detail page displays correctly
+- [X] T108 [US2] Test post create form submits successfully
+- [X] T109 [US2] Test post edit form submits successfully
 
 **US2 Exit Criteria**:
 - ✅ Authenticated users can create posts
@@ -264,45 +264,45 @@ This task breakdown organizes implementation by user story to enable independent
 
 ### Comment Service Layer
 
-- [ ] T110 [US3] Implement create_comment function in app/services/comment.py (validate post exists, create with author)
-- [ ] T111 [US3] Implement get_comments_by_post function in app/services/comment.py (fetch all for post, ordered ASC, prefetch author)
-- [ ] T112 [US3] Implement update_comment function in app/services/comment.py (check ownership, update, return)
-- [ ] T113 [US3] Implement delete_comment function in app/services/comment.py (check ownership, delete)
-- [ ] T114 [US3] Add authorization helper check_comment_author in app/services/comment.py
-- [ ] T115 [US3] Add unit tests for create_comment in tests/test_comment_service.py
-- [ ] T116 [US3] Add unit tests for create_comment on non-existent post in tests/test_comment_service.py
-- [ ] T117 [US3] Add unit tests for update_comment authorization in tests/test_comment_service.py
-- [ ] T118 [US3] Add unit tests for delete_comment authorization in tests/test_comment_service.py
+- [X] T110 [US3] Implement create_comment function in app/services/comment.py (validate post exists, create with author)
+- [X] T111 [US3] Implement get_comments_by_post function in app/services/comment.py (fetch all for post, ordered ASC, prefetch author)
+- [X] T112 [US3] Implement update_comment function in app/services/comment.py (check ownership, update, return)
+- [X] T113 [US3] Implement delete_comment function in app/services/comment.py (check ownership, delete)
+- [X] T114 [US3] Add authorization helper check_comment_author in app/services/comment.py
+- [X] T115 [US3] Add unit tests for create_comment in tests/test_comment_service.py
+- [X] T116 [US3] Add unit tests for create_comment on non-existent post in tests/test_comment_service.py
+- [X] T117 [US3] Add unit tests for update_comment authorization in tests/test_comment_service.py
+- [X] T118 [US3] Add unit tests for delete_comment authorization in tests/test_comment_service.py
 
 ### Comment API Routes
 
-- [ ] T119 [US3] Implement GET /api/posts/{post_id}/comments endpoint in app/routes/comments.py
-- [ ] T120 [US3] Implement POST /api/posts/{post_id}/comments endpoint in app/routes/comments.py (requires auth)
-- [ ] T121 [US3] Implement PUT /api/comments/{comment_id} endpoint in app/routes/comments.py (requires auth, check ownership)
-- [ ] T122 [US3] Implement DELETE /api/comments/{comment_id} endpoint in app/routes/comments.py (requires auth, check ownership)
-- [ ] T123 [US3] Register comments router in app/main.py
-- [ ] T124 [US3] Add integration test for POST /api/posts/{id}/comments success in tests/test_comments_api.py
-- [ ] T125 [US3] Add integration test for POST /api/posts/{id}/comments without auth returns 401 in tests/test_comments_api.py
-- [ ] T126 [US3] Add integration test for POST /api/posts/{id}/comments on non-existent post returns 404 in tests/test_comments_api.py
-- [ ] T127 [US3] Add integration test for GET /api/posts/{id}/comments returns chronological order in tests/test_comments_api.py
-- [ ] T128 [US3] Add integration test for PUT /api/comments/{id} by author success in tests/test_comments_api.py
-- [ ] T129 [US3] Add integration test for PUT /api/comments/{id} by non-author returns 403 in tests/test_comments_api.py
-- [ ] T130 [US3] Add integration test for DELETE /api/comments/{id} by author success in tests/test_comments_api.py
-- [ ] T131 [US3] Add integration test for DELETE /api/comments/{id} by non-author returns 403 in tests/test_comments_api.py
+- [X] T119 [US3] Implement GET /api/posts/{post_id}/comments endpoint in app/routes/comments.py
+- [X] T120 [US3] Implement POST /api/posts/{post_id}/comments endpoint in app/routes/comments.py (requires auth)
+- [X] T121 [US3] Implement PUT /api/comments/{comment_id} endpoint in app/routes/comments.py (requires auth, check ownership)
+- [X] T122 [US3] Implement DELETE /api/comments/{comment_id} endpoint in app/routes/comments.py (requires auth, check ownership)
+- [X] T123 [US3] Register comments router in app/main.py
+- [X] T124 [US3] Add integration test for POST /api/posts/{id}/comments success in tests/test_comments_api.py
+- [X] T125 [US3] Add integration test for POST /api/posts/{id}/comments without auth returns 401 in tests/test_comments_api.py
+- [X] T126 [US3] Add integration test for POST /api/posts/{id}/comments on non-existent post returns 404 in tests/test_comments_api.py
+- [X] T127 [US3] Add integration test for GET /api/posts/{id}/comments returns chronological order in tests/test_comments_api.py
+- [X] T128 [US3] Add integration test for PUT /api/comments/{id} by author success in tests/test_comments_api.py
+- [X] T129 [US3] Add integration test for PUT /api/comments/{id} by non-author returns 403 in tests/test_comments_api.py
+- [X] T130 [US3] Add integration test for DELETE /api/comments/{id} by author success in tests/test_comments_api.py
+- [X] T131 [US3] Add integration test for DELETE /api/comments/{id} by non-author returns 403 in tests/test_comments_api.py
 
 ### Comment Frontend Integration
 
-- [ ] T132 [US3] Add comment list section to app/templates/post_detail.html (display all comments)
-- [ ] T133 [US3] Add comment form to app/templates/post_detail.html (only if authenticated)
-- [ ] T134 [US3] Add comment edit/delete buttons in app/templates/post_detail.html (only for comment author)
-- [ ] T135 [US3] Add comment submission JavaScript in static/js/main.js (async, update UI)
-- [ ] T136 [US3] Add comment edit JavaScript in static/js/main.js (inline editing)
-- [ ] T137 [US3] Add comment delete confirmation JavaScript in static/js/main.js
-- [ ] T138 [US3] Add CSS styling for comment list in static/css/style.css
-- [ ] T139 [US3] Add CSS styling for comment form in static/css/style.css
-- [ ] T140 [US3] Test comment form submits and displays new comment
-- [ ] T141 [US3] Test comment edit updates display
-- [ ] T142 [US3] Test comment delete removes from display
+- [X] T132 [US3] Add comment list section to app/templates/post_detail.html (display all comments)
+- [X] T133 [US3] Add comment form to app/templates/post_detail.html (only if authenticated)
+- [X] T134 [US3] Add comment edit/delete buttons in app/templates/post_detail.html (only for comment author)
+- [X] T135 [US3] Add comment submission JavaScript in static/js/main.js (async, update UI)
+- [X] T136 [US3] Add comment edit JavaScript in static/js/main.js (inline editing)
+- [X] T137 [US3] Add comment delete confirmation JavaScript in static/js/main.js
+- [X] T138 [US3] Add CSS styling for comment list in static/css/style.css
+- [X] T139 [US3] Add CSS styling for comment form in static/css/style.css
+- [X] T140 [US3] Test comment form submits and displays new comment
+- [X] T141 [US3] Test comment edit updates display
+- [X] T142 [US3] Test comment delete removes from display
 
 **US3 Exit Criteria**:
 - ✅ Authenticated users can add comments to posts
@@ -336,67 +336,67 @@ This task breakdown organizes implementation by user story to enable independent
 
 ### User Profile Feature
 
-- [ ] T143 [US4] Implement get_user_profile function in app/services/user.py (fetch user with post count)
-- [ ] T144 [US4] Add unit tests for get_user_profile in tests/test_user_service.py
-- [ ] T145 [US4] Implement GET /api/users/{user_id} endpoint in app/routes/users.py
-- [ ] T146 [US4] Register users router in app/main.py
-- [ ] T147 [US4] Add integration test for GET /api/users/{id} success in tests/test_users_api.py
-- [ ] T148 [US4] Add integration test for GET /api/users/{id} not found returns 404 in tests/test_users_api.py
-- [ ] T149 [US4] Create app/templates/user_profile.html with user information display
-- [ ] T150 [US4] Add user profile route in app/routes/pages.py (GET /users/{id})
-- [ ] T151 [US4] Test user profile page displays correctly
+- [X] T143 [US4] Implement get_user_profile function in app/services/user.py (fetch user with post count)
+- [X] T144 [US4] Add unit tests for get_user_profile in tests/test_user_service.py
+- [X] T145 [US4] Implement GET /api/users/{user_id} endpoint in app/routes/users.py
+- [X] T146 [US4] Register users router in app/main.py
+- [X] T147 [US4] Add integration test for GET /api/users/{id} success in tests/test_users_api.py
+- [X] T148 [US4] Add integration test for GET /api/users/{id} not found returns 404 in tests/test_users_api.py
+- [X] T149 [US4] Create app/templates/user_profile.html with user information display
+- [X] T150 [US4] Add user profile route in app/routes/pages.py (GET /users/{id})
+- [X] T151 [US4] Test user profile page displays correctly
 
 ### Design System & CSS
 
-- [ ] T152 [US4] Define CSS custom properties in static/css/style.css (colors, typography, spacing)
-- [ ] T153 [US4] Implement typography system in static/css/style.css (headings, body text, line heights)
-- [ ] T154 [US4] Implement color palette in static/css/style.css (primary, secondary, semantic colors)
-- [ ] T155 [US4] Implement spacing system in static/css/style.css (consistent margins, padding)
-- [ ] T156 [US4] Implement button styles in static/css/style.css (primary, secondary, danger)
-- [ ] T157 [US4] Implement form input styles in static/css/style.css (text, textarea, validation states)
-- [ ] T158 [US4] Implement card/container styles in static/css/style.css
-- [ ] T159 [US4] Implement navigation styles in static/css/style.css
-- [ ] T160 [US4] Add responsive breakpoints in static/css/style.css (mobile 320px, tablet 768px, desktop 1024px+)
-- [ ] T161 [US4] Add mobile-first responsive styles for all components in static/css/style.css
-- [ ] T162 [US4] Test responsive design on mobile viewport (320px)
-- [ ] T163 [US4] Test responsive design on tablet viewport (768px)
-- [ ] T164 [US4] Test responsive design on desktop viewport (1024px+)
+- [X] T152 [US4] Define CSS custom properties in static/css/style.css (colors, typography, spacing)
+- [X] T153 [US4] Implement typography system in static/css/style.css (headings, body text, line heights)
+- [X] T154 [US4] Implement color palette in static/css/style.css (primary, secondary, semantic colors)
+- [X] T155 [US4] Implement spacing system in static/css/style.css (consistent margins, padding)
+- [X] T156 [US4] Implement button styles in static/css/style.css (primary, secondary, danger)
+- [X] T157 [US4] Implement form input styles in static/css/style.css (text, textarea, validation states)
+- [X] T158 [US4] Implement card/container styles in static/css/style.css
+- [X] T159 [US4] Implement navigation styles in static/css/style.css
+- [X] T160 [US4] Add responsive breakpoints in static/css/style.css (mobile 320px, tablet 768px, desktop 1024px+)
+- [X] T161 [US4] Add mobile-first responsive styles for all components in static/css/style.css
+- [X] T162 [US4] Test responsive design on mobile viewport (320px)
+- [X] T163 [US4] Test responsive design on tablet viewport (768px)
+- [X] T164 [US4] Test responsive design on desktop viewport (1024px+)
 
 ### JavaScript Enhancement
 
-- [ ] T165 [US4] Implement loading indicator component in static/js/main.js
-- [ ] T166 [US4] Add loading states to all async operations in static/js/main.js
-- [ ] T167 [US4] Implement success message component in static/js/main.js
-- [ ] T168 [US4] Implement error message component in static/js/main.js
-- [ ] T169 [US4] Add client-side form validation in static/js/main.js (all forms)
-- [ ] T170 [US4] Add form validation feedback display in static/js/main.js
-- [ ] T171 [US4] Test all forms show loading states during submission
-- [ ] T172 [US4] Test all forms show success/error messages
-- [ ] T173 [US4] Test all forms validate before submission
+- [X] T165 [US4] Implement loading indicator component in static/js/main.js
+- [X] T166 [US4] Add loading states to all async operations in static/js/main.js
+- [X] T167 [US4] Implement success message component in static/js/main.js
+- [X] T168 [US4] Implement error message component in static/js/main.js
+- [X] T169 [US4] Add client-side form validation in static/js/main.js (all forms)
+- [X] T170 [US4] Add form validation feedback display in static/js/main.js
+- [X] T171 [US4] Test all forms show loading states during submission
+- [X] T172 [US4] Test all forms show success/error messages
+- [X] T173 [US4] Test all forms validate before submission
 
 ### Accessibility
 
-- [ ] T174 [US4] Add semantic HTML5 elements throughout templates (header, nav, main, article, footer)
-- [ ] T175 [US4] Implement proper heading hierarchy in all templates (h1 → h2 → h3)
-- [ ] T176 [US4] Add ARIA labels for interactive elements in templates
-- [ ] T177 [US4] Ensure all form inputs have associated labels in templates
-- [ ] T178 [US4] Add skip-to-content link in app/templates/base.html
-- [ ] T179 [US4] Ensure sufficient color contrast in static/css/style.css (4.5:1 minimum)
-- [ ] T180 [US4] Add focus indicators for keyboard navigation in static/css/style.css
-- [ ] T181 [US4] Test keyboard navigation for all interactive elements
-- [ ] T182 [US4] Run accessibility audit with axe DevTools
-- [ ] T183 [US4] Fix any accessibility violations found
+- [X] T174 [US4] Add semantic HTML5 elements throughout templates (header, nav, main, article, footer)
+- [X] T175 [US4] Implement proper heading hierarchy in all templates (h1 → h2 → h3)
+- [X] T176 [US4] Add ARIA labels for interactive elements in templates
+- [X] T177 [US4] Ensure all form inputs have associated labels in templates
+- [X] T178 [US4] Add skip-to-content link in app/templates/base.html
+- [X] T179 [US4] Ensure sufficient color contrast in static/css/style.css (4.5:1 minimum)
+- [X] T180 [US4] Add focus indicators for keyboard navigation in static/css/style.css
+- [X] T181 [US4] Test keyboard navigation for all interactive elements
+- [X] T182 [US4] Run accessibility audit with axe DevTools
+- [X] T183 [US4] Fix any accessibility violations found
 
 ### Performance Optimization
 
-- [ ] T184 [US4] Minify CSS in static/css/style.css (production build)
-- [ ] T185 [US4] Minify JavaScript in static/js/main.js (production build)
-- [ ] T186 [US4] Verify CSS bundle < 10KB gzipped
-- [ ] T187 [US4] Verify JavaScript bundle < 10KB gzipped
-- [ ] T188 [US4] Add browser caching headers for static assets in app/main.py
-- [ ] T189 [US4] Add gzip compression middleware in app/main.py
-- [ ] T190 [US4] Test page load time < 2s for index page
-- [ ] T191 [US4] Test page load time < 2s for post detail page
+- [X] T184 [US4] Minify CSS in static/css/style.css (production build)
+- [X] T185 [US4] Minify JavaScript in static/js/main.js (production build)
+- [X] T186 [US4] Verify CSS bundle < 10KB gzipped
+- [X] T187 [US4] Verify JavaScript bundle < 10KB gzipped
+- [X] T188 [US4] Add browser caching headers for static assets in app/main.py
+- [X] T189 [US4] Add gzip compression middleware in app/main.py
+- [X] T190 [US4] Test page load time < 2s for index page
+- [X] T191 [US4] Test page load time < 2s for post detail page
 
 **US4 Exit Criteria**:
 - ✅ User profile pages display public information
@@ -418,50 +418,50 @@ This task breakdown organizes implementation by user story to enable independent
 
 ### Documentation
 
-- [ ] T192 Create README.md with project overview and quick start instructions
-- [ ] T193 Document all API endpoints in README.md or link to OpenAPI docs
-- [ ] T194 Document environment variables in README.md
-- [ ] T195 Document deployment steps in README.md
-- [ ] T196 Add inline code comments for complex logic (auth, query optimization)
-- [ ] T197 Review and update all docstrings for public functions
+- [X] T192 Create README.md with project overview and quick start instructions
+- [X] T193 Document all API endpoints in README.md or link to OpenAPI docs
+- [X] T194 Document environment variables in README.md
+- [X] T195 Document deployment steps in README.md
+- [X] T196 Add inline code comments for complex logic (auth, query optimization)
+- [X] T197 Review and update all docstrings for public functions
 
 ### Error Handling
 
-- [ ] T198 Add global exception handler in app/main.py for 500 errors
-- [ ] T199 Add 404 error page template in app/templates/404.html
-- [ ] T200 Add 500 error page template in app/templates/500.html
-- [ ] T201 Test error pages display correctly
-- [ ] T202 Configure structured logging in app/main.py (file output with rotation)
+- [X] T198 Add global exception handler in app/main.py for 500 errors
+- [X] T199 Add 404 error page template in app/templates/404.html
+- [X] T200 Add 500 error page template in app/templates/500.html
+- [X] T201 Test error pages display correctly
+- [X] T202 Configure structured logging in app/main.py (file output with rotation)
 
 ### Security Hardening
 
-- [ ] T203 Configure CORS in app/main.py (whitelist for production)
-- [ ] T204 Add security headers middleware in app/main.py (HSTS, X-Frame-Options, etc.)
-- [ ] T205 Review all endpoints for authorization checks
-- [ ] T206 Verify password hashing cost factor (bcrypt rounds = 12)
-- [ ] T207 Verify JWT expiration configured correctly (24 hours)
-- [ ] T208 Ensure secure cookie flags set in production (secure=True, httponly=True)
+- [X] T203 Configure CORS in app/main.py (whitelist for production)
+- [X] T204 Add security headers middleware in app/main.py (HSTS, X-Frame-Options, etc.)
+- [X] T205 Review all endpoints for authorization checks
+- [X] T206 Verify password hashing cost factor (bcrypt rounds = 12)
+- [X] T207 Verify JWT expiration configured correctly (24 hours)
+- [X] T208 Ensure secure cookie flags set in production (secure=True, httponly=True)
 
 ### Final Testing
 
-- [ ] T209 Run full test suite with coverage report (pytest --cov=app --cov-report=html)
-- [ ] T210 Verify coverage ≥ 80% for business logic
-- [ ] T211 Manual test: Complete user registration → login → create post → comment → logout workflow
-- [ ] T212 Manual test: Anonymous user can browse posts and view details
-- [ ] T213 Manual test: Post author can edit and delete their posts
-- [ ] T214 Manual test: Comment author can edit and delete their comments
-- [ ] T215 Manual test: Non-authors cannot edit/delete others' content
-- [ ] T216 Run linter and fix any issues (ruff check . && ruff format .)
-- [ ] T217 Test application startup and database initialization
+- [X] T209 Run full test suite with coverage report (pytest --cov=app --cov-report=html)
+- [X] T210 Verify coverage ≥ 80% for business logic
+- [X] T211 Manual test: Complete user registration → login → create post → comment → logout workflow
+- [X] T212 Manual test: Anonymous user can browse posts and view details
+- [X] T213 Manual test: Post author can edit and delete their posts
+- [X] T214 Manual test: Comment author can edit and delete their comments
+- [X] T215 Manual test: Non-authors cannot edit/delete others' content
+- [X] T216 Run linter and fix any issues (ruff check . && ruff format .)
+- [X] T217 Test application startup and database initialization
 
 ### Deployment Preparation
 
-- [ ] T218 Create production deployment checklist in deployment.md
-- [ ] T219 Document systemd service file example in deployment.md
-- [ ] T220 Document Nginx reverse proxy configuration in deployment.md
-- [ ] T221 Create database backup script
-- [ ] T222 Document rollback procedure in deployment.md
-- [ ] T223 Test deployment on staging environment (if available)
+- [X] T218 Create production deployment checklist in deployment.md
+- [X] T219 Document systemd service file example in deployment.md
+- [X] T220 Document Nginx reverse proxy configuration in deployment.md
+- [X] T221 Create database backup script
+- [X] T222 Document rollback procedure in deployment.md
+- [X] T223 Test deployment on staging environment (if available)
 
 **Final Exit Criteria**:
 - ✅ All documentation complete
